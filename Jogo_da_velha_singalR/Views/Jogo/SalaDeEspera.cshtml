@@ -1,0 +1,51 @@
+﻿@model Jogo_da_velha_singalR.Models.JogadorViewModel
+
+<div class="container">
+
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <section class="login-form">
+                <div class="formulario" id="formLogin" style="min-height:200px;">
+                    <div id="info" class="col-md-12">
+                        @*<i class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i> Aguarde, estabelecendo conexão...*@
+
+                        <ul class="list-unstyled">
+                            <li id="liEtapa1"><i class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i> Estabelecendo conexão com o servidor</li>
+                            <li id="liEtapa2">Aguardando adversário</li>
+                            <li id="liEtapa3">Iniciando partida</li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-4"></div>
+
+
+    </div>
+</div>
+
+@section scripts{ 
+    <script type="text/javascript">
+        var htmlLoading = '<i id="loaging" class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i>';
+        var htmlSuccess = '<span class="help-block has-success"><i class="fa fa-check"></i>';
+        var htmlError = '<span class="help-block has-error"><i class="fa fa-warning">';
+
+        var connection = $.hubConnection();
+
+        connection.start()
+        .done(function () {
+            $("#liEtapa1").find("i").remove();
+            $("#liEtapa1").prepend(htmlSuccess);
+            //$("#info").html('<i class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i> conexão estabelecida, aguardando adversário...')
+
+            console.log("done");
+        })
+        .fail(function () {
+            console.log("Fail");
+        });
+    </script>
+}

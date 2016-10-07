@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using System.Threading.Tasks;
 
 [assembly: OwinStartupAttribute(typeof(Jogo_da_velha_singalR.Startup))]
 namespace Jogo_da_velha_singalR
@@ -10,11 +11,11 @@ namespace Jogo_da_velha_singalR
         {
             ConfigureAuth(app);
 
-            //var task = Task.Run(() => app.MapSignalR());
-            //task.Wait(300);
+            var task = Task.Run(() => app.MapSignalR());
+            task.Wait(300);
 
             //try again if it fails just to be sure ;)
-            //if (task.IsCanceled) Task.Run(() => app.MapSignalR()).Wait(300);
+            if (task.IsCanceled) Task.Run(() => app.MapSignalR()).Wait(300);
         }
     }
 }
