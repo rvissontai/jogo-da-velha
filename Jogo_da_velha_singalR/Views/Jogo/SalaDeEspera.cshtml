@@ -13,8 +13,8 @@
 
                         <ul class="list-unstyled">
                             <li id="liEtapa1"><i class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i> Estabelecendo conexão com o servidor</li>
-                            <li id="liEtapa2">Aguardando adversário</li>
-                            <li id="liEtapa3">Iniciando partida</li>
+                            <li id="liEtapa2"><i class="fa fa-minus fa-2" aria-hidden="true"></i> Aguardando adversário</li>
+                            <li id="liEtapa3"><i class="fa fa-minus fa-2" aria-hidden="true"></i> Iniciando partida</li>
                         </ul>
                     </div>
                     
@@ -31,21 +31,32 @@
 @section scripts{ 
     <script type="text/javascript">
         var htmlLoading = '<i id="loaging" class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i>';
-        var htmlSuccess = '<span class="help-block has-success"><i class="fa fa-check"></i>';
-        var htmlError = '<span class="help-block has-error"><i class="fa fa-warning">';
+        var htmlSuccess = '<i class="help-block has-success fa fa-check"></i>';
+        var htmlError = '<i class="help-block has-error fa fa-warning">';
 
-        var connection = $.hubConnection();
+        var connection = $.connection.jogoHub;
 
-        connection.start()
+        $.connection.hub.qs = { "Apelido": "@ViewBag.Apelido" }
+        $.connection.hub.start()
         .done(function () {
-            $("#liEtapa1").find("i").remove();
-            $("#liEtapa1").prepend(htmlSuccess);
-            //$("#info").html('<i class="fa fa-spinner fa-2 fa-spin" aria-hidden="true"></i> conexão estabelecida, aguardando adversário...')
 
-            console.log("done");
+            //connection.server.novoJogador("@ViewBag.Apelido");
+
+            //Remover icone default
+            $("#liEtapa1").find("i").remove();
+
+            //Adicionar icone de etapa concluída com sucesso
+            $("#liEtapa1").prepend(htmlSuccess);
+
+            //Processando próxima etapa
+            $("#liEtapa2").find('i').prop('class', 'fa fa-spinner fa-2 fa-spin');
         })
         .fail(function () {
-            console.log("Fail");
+            $("#liEtapa1").find('i').prop('class', 'help-block has-error fa fa-warning');
         });
+
+        connection.client.NovoJogador = function () {
+
+        }
     </script>
 }
